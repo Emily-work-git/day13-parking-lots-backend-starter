@@ -4,6 +4,7 @@ import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.Ticket;
 import org.afs.pakinglot.domain.Car;
 import org.afs.pakinglot.domain.ParkingLot;
+import org.afs.pakinglot.domain.dto.FetchCarDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,8 @@ public class ParkingManagerController {
     }
 
     @PostMapping("/parking-strategies/{strategy}")
-    public ResponseEntity<Ticket> parkCar(@PathVariable String strategy, @RequestBody String plateNumber) {
-        Ticket ticket = parkingManager.park(plateNumber, strategy);
+    public ResponseEntity<Ticket> parkCar(@PathVariable String strategy, @RequestBody FetchCarDto fetchCarDto) {
+        Ticket ticket = parkingManager.park(fetchCarDto.getPlateNumber(), strategy);
         return ResponseEntity.ok(ticket);
     }
 
