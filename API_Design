@@ -1,0 +1,122 @@
+# API Design in yaml format
+paths:
+  /parking-strategies:
+      get:
+        summary: "Get All available parking strategy"
+        responses:
+          "200":
+            description: "successful operation"
+            content:
+              application/json:
+                schema:
+                    properties:
+                      content:
+                        type: "array"
+                        items:
+                          type: "string"
+                          example: "firstAvailable"
+              
+  /parkingStrategies/{strategy}:
+      post:
+        summary: "Park a new car to parkingLot"
+        parameters:
+          - name: strategy
+            in: path
+            required: true
+            description: "Parking strategy"
+            schema:
+              type: "string"
+              example: "firstAvailable"
+        requestBody:
+          content:
+            application/json:
+              type: "object"
+              properties:
+                plateNumber:
+                  type: "string"
+                  example: "ab-1234"
+        responses:
+          "200":
+            description: "successful operation"
+            content:
+              application/json:
+                schema:
+                  content:
+                      - type: "array"
+                        items:
+                          $ref: "#/components/schemas/ParkingLot"
+
+  /parking-lots:
+    get:
+      summary: "Get All parking lots"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                  - type: "object"
+                    properties:
+                      content:
+                        type: "array"
+                        items:
+                          $ref: "#/components/schemas/ParkingLot"
+
+  /parkingLots/cars/{plateNumber}:
+    post:
+      summary: "Fetch Car by plateNumber"
+      parameters:
+      - name: plateNumber
+        in: path
+        required: true
+        description: "Car plate number"
+        schema:
+        type: "string"
+        example: "ab-1234"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                  - type: "object"
+                    properties:
+                      content:
+                        type: "array"
+                        items:
+                          $ref: "#/components/schemas/Car"
+
+# dtos:
+schemas:
+  ParkingLot:
+    type: "object"
+    properties:
+      parkingLotId:
+        type: "string"
+        format: "UUIDv4"
+        example: "cf075544-6ef0-4af5-9040-99958e539f68"
+      capacity:
+        type: "integer"
+        example: 10
+      Tickets:
+        type: "array"
+        items:
+          $ref: "#/components/schemas/Ticket"
+  Ticket:
+    type: "object"
+    properties:
+      plateNumber:
+        type: "string"
+        example: "ab-1234"
+      position:
+        type: "integer"
+        example: 1
+      parkingLot:
+        type: "integer"
+        example: 1
+  Car:
+    type: "object"
+    properties:
+      plateNumber:
+        type: "string"
+        example: "ab-1234"
