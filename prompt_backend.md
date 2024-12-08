@@ -129,3 +129,7 @@ Car:
     plateNumber: 
     type: "string"
     example: "ab-1234"
+
+4. given the following APIs, write integration test for ParkingManagerController using following naming convention: "should_return_<something>_when_<something>_given_<something>", you may use the MockMvc and WebApplicationContext in the test
+5. please add license Plate Validation for park and fetch function, here is the requirement:  License plates must follow the format standard: two letters + four digits (e.g., “AB-1234”). ○ The system must reject empty or invalid license plate entries.
+6. please add unit test for the validateLicensePlate function, please follow the following naming convention: "should_return_<something>_when_<something>_given_<something>"
