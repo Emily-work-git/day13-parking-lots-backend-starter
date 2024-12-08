@@ -63,4 +63,17 @@ public class ParkingManagerControllerTest {
                 .andExpect(jsonPath("$[2].name").value("Office Tower Parking"))
                 .andExpect(jsonPath("$[2].capacity").value(9));
     }
+
+    @Test
+    void should_return_ticket_when_park_car_given_plate_number_and_strategy() throws Exception {
+        mockMvc.perform(post("/parking-strategies/sequentially")
+                        .content("XY-5678")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.plateNumber").value("XY-5678"))
+                .andExpect(jsonPath("$.parkingLot").exists())
+                .andExpect(jsonPath("$.position").exists());
+    }
+
+
 }
