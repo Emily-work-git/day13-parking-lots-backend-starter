@@ -15,7 +15,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,11 +41,26 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_return_all_available_parking_strategies() throws Exception {
-        mockMvc.perform(get("/parkingStrategies"))
+        mockMvc.perform(get("/parking-strategies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0]").value("sequentially"))
                 .andExpect(jsonPath("$[1]").value("maxavailable"))
                 .andExpect(jsonPath("$[2]").value("availablerate"));
     }
 
+
+    @Test
+    void should_return_all_parking_lots_when_GetAllParkingLots() throws Exception {
+        mockMvc.perform(get("/parking-lots"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("The Plaza Park"))
+                .andExpect(jsonPath("$[0].capacity").value(9))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("City Mall Garage"))
+                .andExpect(jsonPath("$[1].capacity").value(12))
+                .andExpect(jsonPath("$[2].id").value(3))
+                .andExpect(jsonPath("$[2].name").value("Office Tower Parking"))
+                .andExpect(jsonPath("$[2].capacity").value(9));
+    }
 }
