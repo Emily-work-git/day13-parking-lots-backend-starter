@@ -43,9 +43,9 @@ public class ParkingManagerControllerTest {
     void should_return_all_available_parking_strategies() throws Exception {
         mockMvc.perform(get("/parking-strategies"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value("sequentially"))
-                .andExpect(jsonPath("$[1]").value("maxavailable"))
-                .andExpect(jsonPath("$[2]").value("availablerate"));
+                .andExpect(jsonPath("$[0]").value("Standard"))
+                .andExpect(jsonPath("$[1]").value("Smart"))
+                .andExpect(jsonPath("$[2]").value("Supersmart"));
     }
 
 
@@ -66,7 +66,7 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_return_ticket_when_park_car_given_plate_number_and_strategy() throws Exception {
-        mockMvc.perform(post("/parking-strategies/sequentially")
+        mockMvc.perform(post("/parking-strategies/standard")
                         .content("XY-5678")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class ParkingManagerControllerTest {
     @Test
     void should_return_car_when_fetch_car_given_plate_number() throws Exception {
         // First park the car to get a ticket
-        mockMvc.perform(post("/parking-strategies/sequentially")
+        mockMvc.perform(post("/parking-strategies/standard")
                         .content("XY-5678")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

@@ -4,15 +4,15 @@ import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.Ticket;
 import org.afs.pakinglot.domain.Car;
 import org.afs.pakinglot.domain.ParkingLot;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping()
+@RequestMapping(
+)
+
 public class ParkingManagerController {
 
     private final ParkingManager parkingManager;
@@ -23,7 +23,7 @@ public class ParkingManagerController {
 
     @GetMapping("/parking-strategies")
     public ResponseEntity<List<String>> getAllAvailableParkingStrategy() {
-        List<String> strategies = List.of("sequentially", "maxavailable", "availablerate");
+        List<String> strategies = List.of("Standard", "Smart", "Supersmart");
         return ResponseEntity.ok(strategies);
     }
 

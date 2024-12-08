@@ -33,11 +33,11 @@ public class ParkingManager {
     public Ticket park(String plateNumber, String strategy) {
         Car car = new Car(plateNumber);
         switch (strategy.toLowerCase()) {
-            case "sequentially":
+            case "standard":
                 return standardParkingBoy.park(car);
-            case "maxavailable":
+            case "smart":
                 return smartParkingBoy.park(car);
-            case "availablerate":
+            case "supersmart":
                 return superSmartParkingBoy.park(car);
             default:
                 throw new IllegalArgumentException("Invalid parking strategy");
