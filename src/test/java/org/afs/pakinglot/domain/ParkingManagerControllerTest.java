@@ -75,5 +75,17 @@ public class ParkingManagerControllerTest {
                 .andExpect(jsonPath("$.position").exists());
     }
 
+    @Test
+    void should_return_car_when_fetch_car_given_plate_number() throws Exception {
+        // First park the car to get a ticket
+        mockMvc.perform(post("/parking-strategies/sequentially")
+                        .content("XY-5678")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
+        // Then fetch the car using the plate number
+        mockMvc.perform(post("/parking-lots/cars/XY-5678"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.plateNumber").value("XY-5678"));
+    }
 }
