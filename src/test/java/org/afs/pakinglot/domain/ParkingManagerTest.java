@@ -24,51 +24,53 @@ class ParkingManagerTest {
     }
 
     @Test
-    void should_return_ticket_when_park_given_plateNumber_and_sequentially_strategy() {
-        String plateNumber = "ABC123";
-        Ticket ticket = parkingManager.park(plateNumber, "sequentially");
+    void should_return_ticket_when_park_given_plateNumber_and_standard_strategy() {
+        String plateNumber = "AB-1234";
+        Ticket ticket = parkingManager.park(plateNumber, "standard");
         assertNotNull(ticket);
     }
 
     @Test
-    void should_return_ticket_when_park_given_plateNumber_and_maxavailable_strategy() {
-        String plateNumber = "DEF456";
-        Ticket ticket = parkingManager.park(plateNumber, "maxavailable");
+    void should_return_ticket_when_park_given_plateNumber_and_smart_strategy() {
+        String plateNumber = "DE-4567";
+        Ticket ticket = parkingManager.park(plateNumber, "smart");
         assertNotNull(ticket);
     }
 
     @Test
-    void should_return_ticket_when_park_given_plateNumber_and_availablerate_strategy() {
-        String plateNumber = "GHI789";
-        Ticket ticket = parkingManager.park(plateNumber, "availablerate");
+    void should_return_ticket_when_park_given_plateNumber_and_superSmart_strategy() {
+        String plateNumber = "GH-7891";
+        Ticket ticket = parkingManager.park(plateNumber, "superSmart");
         assertNotNull(ticket);
     }
 
     @Test
     void should_return_car_when_fetch_given_plate_number() {
-        String plateNumber = "JKL012";
-        Ticket ticket = parkingManager.park(plateNumber, "sequentially");
+        String plateNumber = "JK-0122";
+        Ticket ticket = parkingManager.park(plateNumber, "standard");
         Car fetchedCar = parkingManager.fetch(plateNumber);
         assertEquals(plateNumber, fetchedCar.plateNumber());
     }
 
     @Test
     void should_throw_exception_when_fetch_given_non_existent_plateNumber() {
-        String plateNumber = "MNO345";
+        String plateNumber = "MN-3456";
         assertThrows(UnrecognizedTicketException.class, () -> parkingManager.fetch(plateNumber));
     }
 
     @Test
     void should_throw_exception_when_park_given_parking_lots_are_full() {
         for (int i = 0; i < 30; i++) {
-            parkingManager.park("CAR" + i, "sequentially");
+            String plateNumber = String.format("%s-%04d", "AB", i);
+            System.out.println(plateNumber);
+            parkingManager.park(plateNumber, "standard");
         }
-        assertThrows(NoAvailablePositionException.class, () -> parkingManager.park("PQR678", "sequentially"));
+        assertThrows(NoAvailablePositionException.class, () -> parkingManager.park("PQ-1678", "standard"));
     }
 
     @Test
     void should_throw_exception_when_fetch_given_an_unrecognized_ticket() {
-        String plateNumber = "XYZ123";
+        String plateNumber = "XY-1123";
         Ticket unrecognizedTicket = new Ticket(CarPlateGenerator.generatePlate(), 1, 1);
 
         assertThrows(UnrecognizedTicketException.class, () -> parkingManager.fetch(unrecognizedTicket.plateNumber()));
@@ -76,9 +78,24 @@ class ParkingManagerTest {
 
     @Test
     void should_throw_exception_when_fetch_given_a_used_ticket() {
-        String plateNumber = "UVW456";
-        Ticket ticket = parkingManager.park(plateNumber, "sequentially");
+        String plateNumber = "UV-1456";
+        Ticket ticket = parkingManager.park(plateNumber, "standard");
         parkingManager.fetch(plateNumber);
         assertThrows(UnrecognizedTicketException.class, () -> parkingManager.fetch(plateNumber));
+    }
+
+    @Test
+    void should_throw_exception_when_license_plate_is_null_given_validateLicensePlate() {
+        assertThrows(IllegalArgumentException.class, () -> parkingManager.validateLicensePlate(null));
+    }
+
+    @Test
+    void should_throw_exception_when_license_plate_is_invalid_given_validateLicensePlate() {
+        assertThrows(IllegalArgumentException.class, () -> parkingManager.validateLicensePlate("123-ABCD"));
+    }
+
+    @Test
+    void should_not_throw_exception_when_license_plate_is_valid_given_validateLicensePlate() {
+        parkingManager.validateLicensePlate("AB-1234");
     }
 }

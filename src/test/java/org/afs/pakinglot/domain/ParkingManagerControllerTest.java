@@ -1,6 +1,7 @@
 package org.afs.pakinglot.domain;
 
 import org.afs.pakinglot.domain.ParkingLot;
+import org.afs.pakinglot.domain.dto.FetchCarDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,11 +67,12 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_return_ticket_when_park_car_given_plate_number_and_strategy() throws Exception {
+
         mockMvc.perform(post("/parking-strategies/standard")
-                        .content("XY-5678")
+                        .content("{\"plateNumber\":\"XY-8563\"}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.plateNumber").value("XY-5678"))
+                .andExpect(jsonPath("$.plateNumber").value("XY-8563"))
                 .andExpect(jsonPath("$.parkingLot").exists())
                 .andExpect(jsonPath("$.position").exists());
     }
@@ -79,13 +81,13 @@ public class ParkingManagerControllerTest {
     void should_return_car_when_fetch_car_given_plate_number() throws Exception {
         // First park the car to get a ticket
         mockMvc.perform(post("/parking-strategies/standard")
-                        .content("XY-5678")
+                        .content("{\"plateNumber\":\"XY-8563\"}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // Then fetch the car using the plate number
-        mockMvc.perform(post("/parking-lots/cars/XY-5678"))
+        mockMvc.perform(post("/parking-lots/cars/XY-8563"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.plateNumber").value("XY-5678"));
+                .andExpect(jsonPath("$.plateNumber").value("XY-8563"));
     }
 }
